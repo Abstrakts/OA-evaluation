@@ -1,0 +1,27 @@
+// FONTS
+@font-face {
+    font-family: 'Wigrum-Bold';
+    src: url('../fonts/wigrum-bold.otf')
+};
+@font-face {
+    font-family: 'Wigrum-Regular';
+    src: url('../fonts/wigrum-regular.otf')
+};
+
+// COLORS
+$white: #FFF;
+$light: #F6F6FB;
+$gray: #546285;
+$light_gray: #c7c7c72b;
+$purple: #462682;
+$light_purple: #4626822b;
+$blue: #00B0FF;
+$light_blue: #03a9f42b;
+$orange: #F49403;
+$light_orange: #f494032b;
+
+$title_size: 40px;
+$title_font: 'Wigrum-Bold', sans-serif;
+
+$content_size: 12px;
+$content_font: 'Wigrum-Regular', sans-serif;

@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/3.1.0/geosearch.css"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <title>OA évaluation</title>
+  </head>
+  <body x-data="dataHandler" x-init="init()">
+    <header class="container mb-2">
+      <div class="row">
+        <div class="col-4 d-flex align-items-center justify-content-center">
+          <a class="fas fa-chevron-left icons"></a>
+          <button
+            class="btn btn-dark reverse"
+            x-show="started"
+            @click="removeAlgolia()"
+          >
+            Retour
+          </button>
+        </div>
+
+        <div class="col-4 d-flex align-items-center justify-content-center">
+          <img class="OA-logo" src="https://storage.googleapis.com/evaluation-oa/OA-evaluation/assets/images/OA-logo-light.svg" alt="" />
+        </div>
+
+        <div class="col-4 d-flex align-items-center justify-content-center">
+          <a class="fas fa-phone-alt icons"></a>
+          <a href="https://conseils.objectif-autonomie.fr/formules" class="btn btn-dark reverse">
+            Continuer avec un conseiller
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container" x-show.transition.opacity="!started">
+      <div
+        class="row info_title d-flex align-items-center justify-content-center mb-4"
+      >
+        <h1 class="text-center">Informations Générales</h1>
+        <p class="text-center">
+          Afin de filter au mieux vos besoins, <br />
+          merci de répondre à ces quelques questions.
+        </p>
+      </div>
+      <div class="row">
+        <section
+          class="col-12 col-md-12 col-lg-6 general_informations mb-5 container"
+        >
+          <div
+            class="container d-flex align-items-center justify-content-center flex-column"
+          >
+            <img
+              class="img-fluid w-100 mb-5"
+              src="assets/images/location_illu.svg"
+              x-show.transition.opacity="!addressSet"
+              alt=""
+            />
+            <div
+              class="question_template"
+              x-show.transition.opacity="!addressSet"
+            >
+              <h3 class="mb-3">
+                Dans quelle région effectuez-vous la recherche ?
+              </h3>
+              <p>
+                Veuillez entrer une ville ou une adresse complète ainsi que le
+                rayon en km pour affiner votre recherche.
+              </p>
+              <div
+                class="responses_template d-flex align-items-center justify-content-center mt-4"
+              >
+                <input
+                  type="text"
+                  name=""
+                  id="address"
+                  placeholder="Ex: Ville ou adresse complète"
+                />
+                <input
+                  type="number"
+                  name=""
+                  id="km_radius"
+                  placeholder="50"
+                  min='10'
+                  max="100"
+                  class="mx-1"
+                />
+              </div>
+            </div>
+            <button
+              class="btn btn-dark mt-4"
+              id="locateButton"
+              x-show.transition.opacity="!addressSet"
+            >
+              Valider ma localisation
+            </button>
+
+            <div x-show.transition.opacity="addressSet">
+              <div class="question_template mt-4">
+                <h3 class="mb-3">Vous effectuez une recherche pour :</h3>
+                <div
+                  class="responses_template d-flex align-items-center justify-content-center"
+                >
+                  <div id="searchFor"></div>
+                </div>
+              </div>
+
+              <div class="question_template mt-4">
+                <h3 class="mb-3">Quel âge à votre proche ?</h3>
+                <div class="responses_template">
+                  <div id="age"></div>
+                </div>
+              </div>
+
+              <div class="question_template mt-4">
+                <h3 class="mb-3">
+                  Votre proche est-il atteind d'une maladie <br />
+                  liée à la vieillesse (alzheimer, ...)
+                </h3>
+                <div
+                  class="responses_template d-flex align-items-center justify-content-center"
+                >
+                  <div id="isAutonome"></div>
+                </div>
+              </div>
+
+              <div class="question_template mt-4">
+                <h3 class="mb-3">Quelle est votre mutuelle ?</h3>
+                <div
+                  class="responses_template d-flex align-items-center justify-content-center flex-wrap"
+                >
+                  <button class="btn btn-secondary choice">
+                    <img class="icon" src="assets/images/HMU.jpg" alt="" />
+                  </button>
+                  <button class="btn btn-secondary choice">
+                    <img class="icon" src="assets/images/MGEN.png" alt="" />
+                  </button>
+                  <button class="btn btn-secondary choice">
+                    <img class="icon" src="assets/images/MNT.jpg" alt="" />
+                  </button>
+                  <button class="btn btn-secondary choice">Autre</button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              class="btn btn-dark mt-3"
+              id="startButton"
+              x-show.transition.opacity="addressSet"
+            >
+              Continuer
+            </button>
+          </div>
+        </section>
+        <section
+          class="col-12 col-md-12 col-lg-6 faq_blc d-flex align-items-center justify-content-start flex-column"
+        >
+          <div
+            class="mt-3 faq_intro d-flex align-items-center justify-content-center flex-column"
+          >
+            <div
+              class="bubble d-flex align-items-center justify-content-center"
+            >
+              <i class="fas fa-question"></i>
+            </div>
+            <h4 class="mt-3">Quelques informations</h4>
+          </div>
+          <div class="mt-3 sepparation_blc"></div>
+          <div
+            class="faq_content d-flex align-items-center justify-content-center flex-column"
+          >
+            <div class="title mt-5">L'auto diagnostic, à quoi ca sert ?</div>
+            <div class="content mt-2">
+              Cet outil vous permet de touver des solutions en rapport avec votre perte d'autonomie, de façon indépendante.
+              Il vous redirige vers les pages présentants les solutions à partir desquels vous pourrez contacter l'acteur qui vous intéresse.
+            </div>
+            <div class="title mt-5">
+              Comment gérez-vous mes données personnelles ?
+            </div>
+            <div class="content mt-2">
+              Cette application ne sauvegarde aucune de vos données personnelles.
+            </div>
+            <div class="title mt-5">Le saviez-vous ?</div>
+            <div class="content mt-2"> Objectif-autonomie a été dévéloppé avec le soutien constant du Groupe Vyv et de ses infirmières conseils.</div>
+            <div class="accordion accordion-flush mt-2" id="faq_accordion" style="display:none">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
+                  >
+                    Lorem ipsum
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#faq_accordion"
+                >
+                  <div class="accordion-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life
+                    accusamus terry richardson ad squid. 3 wolf moon officia
+                    aute, non cupidatat skateboard dolor brunch. Food truck
+                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                    sunt aliqua put a bird on it squid single-origin coffee
+                    nulla assumenda shoreditch et. Nihil anim keffiyeh
+                    helvetica, craft beer labore wes anderson cred nesciunt
+                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                    Leggings occaecat craft beer farm-to-table, raw denim
+                    aesthetic synth nesciunt you probably haven't heard of them
+                    accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseTwo"
+                  >
+                    Lorem ipsum
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingTwo"
+                  data-bs-parent="#faq_accordion"
+                >
+                  <div class="accordion-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life
+                    accusamus terry richardson ad squid. 3 wolf moon officia
+                    aute, non cupidatat skateboard dolor brunch. Food truck
+                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                    sunt aliqua put a bird on it squid single-origin coffee
+                    nulla assumenda shoreditch et. Nihil anim keffiyeh
+                    helvetica, craft beer labore wes anderson cred nesciunt
+                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                    Leggings occaecat craft beer farm-to-table, raw denim
+                    aesthetic synth nesciunt you probably haven't heard of them
+                    accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseThree"
+                  >
+                    Lorem ipsum
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingThree"
+                  data-bs-parent="#faq_accordion"
+                >
+                  <div class="accordion-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life
+                    accusamus terry richardson ad squid. 3 wolf moon officia
+                    aute, non cupidatat skateboard dolor brunch. Food truck
+                    quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                    sunt aliqua put a bird on it squid single-origin coffee
+                    nulla assumenda shoreditch et. Nihil anim keffiyeh
+                    helvetica, craft beer labore wes anderson cred nesciunt
+                    sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                    Leggings occaecat craft beer farm-to-table, raw denim
+                    aesthetic synth nesciunt you probably haven't heard of them
+                    accusamus labore sustainable VHS.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <main class="container mb-3" x-show.transition.opacity="started">
+      <div class="user_menu d-flex align-items-center justify-content-between">
+        <button
+          class="btn btn-dark user_informations_edit"
+          @click="removeAlgolia()"
+        >
+          <i class="fas fa-user"></i>
+        </button>
+        <!-- <div class="general_filters mb-3">
+          <div
+            class="filter_puce d-flex align-items-center justify-content-center"
+          >
+            Info 1
+          </div>
+          <div
+            class="filter_puce d-flex align-items-center justify-content-center"
+          >
+            Info 2
+          </div>
+          <div
+            class="filter_puce d-flex align-items-center justify-content-center"
+          >
+            Info 3
+          </div>
+          <div
+            class="filter_puce d-flex align-items-center justify-content-center"
+          >
+            Info 4
+          </div>
+        </div> -->
+        <div class="form-check form-switch" style="display:none">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="flexSwitchCheckChecked"
+          />
+          <label class="form-check-label" for="flexSwitchCheckChecked">
+            <i class="fas fa-map-marker-alt"></i>
+          </label>
+        </div>
+      </div>
+      <div class="row d-flex align-items-start justify-content-between">
+        <section
+          class="col-12 col-md-8 col-lg-8 main_content d-flex align-items-center justify-content-center flex-column mt-4 mt-md-0 mt-lg-0"
+        >
+          <div
+            class="content mt-3 d-flex align-items-center justify-content-center flex-column"
+          >
+            <h1 class="text-center">
+              Découvrez les résultats <br />
+              les plus pertinents
+            </h1>
+            <div
+              id="map"
+              class="mt-2 mb-2"
+              x-show.transition.opacity="map"
+            ></div>
+            <div class="accordion acctest" id="accordion">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button
+                    class="accordion-button d-flex align-items-center justify-content-center flex-row"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne"
+                    aria-expanded="true"
+                    aria-controls="collapseOne"
+                  >
+                    <div
+                      class="puce blue d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Centres et ressources</h2>
+                        <p>Retrouvez ici toutes les solutions qui peuvent vous aider à aller plus loin dans vos recherches.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseOne"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="cr_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="cr_pagination"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="collapseTwo"
+                  >
+                    <div
+                      class="puce purple d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Santé</h2>
+                        <p>Retrouvez ici toutes les solutions propres à la santé et à des besoins de santés précis.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseTwo"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingTwo"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>J'ai besoin de :</span>
+                    <div id="sante_filters"></div>
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="sante_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                            <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="sante_pagination"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseThree"
+                    aria-expanded="false"
+                    aria-controls="collapseThree"
+                  >
+                    <div
+                      class="puce orange d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Service à la personne</h2>
+                        <p>Retrouvez ici toutes les solutions qui vous aides dans votre quotidien.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseThree"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingFour"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>J'ai besoin de :</span>
+                    <div id="sp_filters"></div>
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="sp_list">
+    
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                        </a>
+                        </div>
+                      </div>
+                   
+                    </div>
+                    <div id="sp_pagination"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFour">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseFour"
+                    aria-expanded="false"
+                    aria-controls="collapseFour"
+                  >
+                    <div
+                      class="puce gray d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Maintiens à domicile</h2>
+                        <p>Retrouvez ici toutes les solutions qui vous aident à rester à domicile.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseFour"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingFour"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>J'ai besoin de :</span>
+                    <div id="md_filters"></div>
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="md_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="md_pagination"></div>
+                   <span>Solutions nationales :</span>
+                    <div id="md_national">
+                      <template x-for="item in national_md">
+                        <div
+                          class="solution_template d-flex align-items-center justify-content-start"
+                        >
+                          <i
+                            class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                          ></i>
+                          <div class="content mt-2">
+                            <h4 x-text="item.name"></h4>
+                            <p x-text="item.url"></p>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingFive">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseFive"
+                    aria-expanded="false"
+                    aria-controls="collapseFive"
+                  >
+                    <div
+                      class="puce blue d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Loisirs et liens social</h2>
+                        <p>Retrouvez ici des solutions à même d'apporter du lien social et des loisirs.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseFive"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingFive"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>J'ai besoin de :</span>
+                    <div id="lls_filters"></div>
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="lls_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                        </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="lls_pagination"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSix">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseSix"
+                    aria-expanded="false"
+                    aria-controls="collapseSix"
+                  >
+                    <div
+                      class="puce purple d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Lieux de vie et accueils adaptés</h2>
+                        <p>Retrouvez ici toutes les solutions pour vous aider à trouver des logements adaptés.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseSix"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingSix"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>J'ai besoin de :</span>
+                    <div id="lv_filters"></div>
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="lv_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="lv_pagination"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item aidant" x-show='aidant'>
+                <h2 class="accordion-header" id="headingSeven">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#collapseSeven"
+                    aria-expanded="false"
+                    aria-controls="collapseSeven"
+                  >
+                    <div
+                      class="puce orange d-flex align-items-center justify-content-center"
+                    >
+                      <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="accordion_title_content mt-2">
+                      <span>
+                        <h2>Aidant</h2>
+                        <p>Retrouvez ici les solutions propres aux aidants.</p>
+                      </span>
+                    </div>
+                  </button>
+                </h2>
+                <div
+                  id="collapseSeven"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="headingSeven"
+                  data-bs-parent="#accordion"
+                >
+                  <div class="accordion-body">
+                    <span>Mes solutions personnalisées :</span>
+                    <div id="aid_list">
+                      <div
+                        class="solution_template d-flex align-items-center justify-content-start"
+                      >
+                        <i
+                          class="puce fas fa-hands-helping d-flex align-items-center justify-content-center"
+                        ></i>
+                        <div class="content mt-2">
+                          <a href="{{url}}" target="_blank">
+                          <h4>{{ nom }}</h4>
+                          <p>
+                            {{ numero_de_voie }} {{ type_de_voie }} {{
+                            libelle_de_voie }} - {{ code_postal }} - {{ ville }}
+                          </p>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="aid_pagination"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-dark reverse mt-3 mb-3">
+              Voir plus de thématiques
+            </button>
+          </div>
+        </section>
+
+        <section
+          class="col-12 col-md-4 col-lg-4 popular_articles mt-4 mt-md-0 mt-lg-0 py-4 ml-md-4 ml-lg-4"
+        >
+          <h1 class="text-center">
+            Autres articles <br />
+            populaires
+          </h1>
+          <div class="articles container" id="articles">
+            <div class="row d-flex align-items-center justify-content-center">
+              <div class="col-6 col-md-12 col-lg-12 article_card p-2">
+                <div class="article_card_thumb">
+                  <img src="{{ image }}" alt="" />
+                </div>
+                <div class="article_content mt-2">
+                  <h4>{{ title }}</h4>
+                  <p>Catégorie : {{ categoryLabel }}</p>
+                  <a href="{{ url }}" class="btn btn-dark reverse">
+                    Lire l'article
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="w-100" id="articles_pagination"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <img src="https://storage.googleapis.com/evaluation-oa/OA-evaluation/assets/images/OA-logo.svg" alt="" class="stain" style="margin-top: 10px;" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.1.0/mustache.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+      defer
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js"
+      integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js"
+      integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch-helper@3.3.4/dist/algoliasearch.helper.min.js"></script>
+
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/algolia.js"></script>
+  </body>
+</html>

@@ -1,0 +1,435 @@
+@font-face {
+  font-family: 'Wigrum-Bold';
+  src: url("../fonts/wigrum-bold.otf"); }
+
+@font-face {
+  font-family: 'Wigrum-Regular';
+  src: url("../fonts/wigrum-regular.otf"); }
+
+ol, ul {
+  list-style-type: none; }
+
+body {
+  background-color: #F6F6FB; }
+
+a {
+  text-decoration: none; }
+
+.btn-primary {
+  background-color: #c7c7c72b;
+  border: none;
+  font-family: "Wigrum-Regular", sans-serif;
+  color: #546285 !important;
+  font-size: 13px;
+  height: 47px;
+  margin: 5px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .btn-primary .ais-Menu-count {
+    display: none; }
+  .btn-primary a {
+    color: #546285; }
+  .btn-primary.ais-Menu-item--selected, .btn-primary:hover {
+    background-color: #00B0FF;
+    border: none;
+    font-family: "Wigrum-Regular", sans-serif;
+    font-size: 13px;
+    box-shadow: 0px 0px 10px #00B0FF; }
+    .btn-primary.ais-Menu-item--selected a, .btn-primary:hover a {
+      color: #FFF; }
+
+.ais-Menu {
+  display: flex;
+  flex-direction: column; }
+
+.btn-secondary {
+  background-color: #FFF;
+  border: none;
+  font-family: "Wigrum-Regular", sans-serif;
+  color: #546285;
+  font-size: 13px;
+  min-width: 135px;
+  height: 71px;
+  margin: 5px 5px; }
+  .btn-secondary .icon {
+    width: 45px;
+    border: none;
+    pointer-events: none; }
+  .btn-secondary.active, .btn-secondary:focus, .btn-secondary:hover {
+    background-color: #FFF;
+    border: none;
+    color: #546285;
+    font-family: "Wigrum-Regular", sans-serif;
+    font-size: 13px;
+    box-shadow: 0px 0px 10px #00B0FF; }
+
+.btn-dark, .ais-Menu-showMore {
+  background-color: #462682;
+  border: none;
+  font-family: "Wigrum-Regular", sans-serif;
+  color: #FFF;
+  font-size: 13px;
+  height: 33px;
+  margin: 5px 5px;
+  border-radius: 50px; }
+  .btn-dark.reverse, .ais-Menu-showMore.reverse {
+    background-color: transparent;
+    color: #462682;
+    border: 1px solid #462682; }
+  .btn-dark:active, .btn-dark:focus, .btn-dark:hover, .ais-Menu-showMore:active, .ais-Menu-showMore:focus, .ais-Menu-showMore:hover {
+    background-color: transparent;
+    border: 1px solid #462682;
+    font-family: "Wigrum-Regular", sans-serif;
+    color: #462682;
+    font-size: 13px;
+    box-shadow: 0px 0px 10px #462682; }
+
+.ais-Menu-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding: 0; }
+
+header {
+  position: relative;
+  height: 135px;
+  background-color: #462682;
+  border-bottom-left-radius: 50%;
+  border-bottom-right-radius: 50%; }
+  header .row {
+    height: 100%; }
+    header .row .icons {
+      color: #FFF;
+      font-size: 23px;
+      cursor: pointer; }
+    header .row button {
+      display: inherit;
+      min-width: inherit !important; }
+
+@media (max-width: 960px) {
+  header .col-4 button {
+    display: none !important; } }
+
+@media (min-width: 960px) {
+  header {
+    background-color: transparent; }
+    header .icons {
+      display: none; } }
+
+.info_title h1 {
+  font-family: "Wigrum-Bold", sans-serif;
+  font-size: 20px; }
+
+.info_title p {
+  font-family: "Wigrum-Regular", sans-serif;
+  font-size: 10px; }
+
+.general_informations {
+  display: flex;
+  max-width: 375px;
+  background-color: #FFF;
+  padding: 10px;
+  border-radius: 10px; }
+  .general_informations .container {
+    padding: 15px; }
+  .general_informations .question_template {
+    width: 100%; }
+    .general_informations .question_template h3 {
+      text-align: center;
+      font-family: "Wigrum-Bold", sans-serif;
+      font-size: 15px;
+      color: #546285; }
+    .general_informations .question_template p {
+      font-family: "Wigrum-Regular", sans-serif;
+      font-size: 12px;
+      text-align: center;
+      color: #546285; }
+  .general_informations .responses_template #age {
+    max-width: 100%; }
+  .general_informations .responses_template input {
+    width: 263px;
+    height: 47px;
+    border: 1px solid #c7c7c7;
+    color: #546285;
+    padding: 5px 10px;
+    font-family: "Wigrum-Regular", sans-serif;
+    background-color: #FFF;
+    border-radius: 5px;
+    font-size: 12px; }
+    .general_informations .responses_template input::placeholder {
+      color: #546285;
+      opacity: 0.5; }
+  .general_informations .responses_template #km_radius {
+    width: 60px !important; }
+
+.faq_blc {
+  display: flex;
+  background-color: #FFF;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 100px; }
+  .faq_blc .faq_intro h4 {
+    font-family: "Wigrum-Bold", sans-serif;
+    color: #00B0FF;
+    font-size: 17px; }
+  .faq_blc .faq_intro .bubble {
+    background-color: #03a9f42b;
+    height: 75px;
+    width: 75px;
+    font-size: 30px;
+    color: #00B0FF;
+    border-radius: 50%; }
+  .faq_blc .sepparation_blc {
+    height: 2px;
+    width: 80%;
+    background-color: #00B0FF; }
+  .faq_blc .faq_content {
+    width: 100%; }
+    .faq_blc .faq_content .title {
+      font-family: "Wigrum-Bold", sans-serif;
+      color: #546285; }
+    .faq_blc .faq_content .content {
+      width: 80%;
+      color: #546285;
+      font-family: "Wigrum-Regular", sans-serif;
+      font-size: 12px; }
+  .faq_blc #faq_accordion {
+    width: 80%;
+    font-family: "Wigrum-Regular", sans-serif;
+    font-size: 12px; }
+    .faq_blc #faq_accordion .accordion-button {
+      font-family: "Wigrum-Bold", sans-serif;
+      color: #546285; }
+
+.stain {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  bottom: 0;
+  right: 0;
+  object-fit: contain;
+  z-index: -1; }
+  @media (max-width: 1200px) {
+    .stain {
+      display: none; } }
+
+main .user_menu button {
+  border-radius: 5px !important;
+  min-width: 50px !important;
+  height: 35px !important; }
+  @media (min-width: 1200px) {
+    main .user_menu button {
+      display: none; } }
+
+main .user_menu .form-switch .form-check-input {
+  cursor: pointer;
+  background-image: url("../images/toggle.svg");
+  border: 1px solid #462682; }
+  main .user_menu .form-switch .form-check-input:active, main .user_menu .form-switch .form-check-input:checked {
+    background-color: #462682;
+    background-image: url("../images/toggle_white.svg"); }
+
+main .user_menu .form-switch label {
+  color: #462682;
+  font-size: 14px; }
+
+main .user_menu .general_filters {
+  display: none; }
+  @media (min-width: 1200px) {
+    main .user_menu .general_filters {
+      display: inherit; } }
+  main .user_menu .general_filters .filter_puce {
+    height: 21px;
+    min-width: 79px;
+    color: #462682;
+    background-color: #4626822b;
+    font-family: "Wigrum-Regular", sans-serif;
+    font-size: 8px;
+    border-radius: 50px;
+    margin: 0 5px; }
+
+main .main_content {
+  background-color: #FFF;
+  border-radius: 5px; }
+  main .main_content #map {
+    height: 322px;
+    width: 95%;
+    border-radius: 10px; }
+  main .main_content .content {
+    padding: 0 2px;
+    width: 100%; }
+    main .main_content .content h1 {
+      font-family: "Wigrum-Bold", sans-serif;
+      font-size: 22px;
+      color: #546285; }
+    main .main_content .content .accordion-button {
+      padding: 5px !important;
+      border-radius: 10px;
+      width: 100%; }
+    main .main_content .content .accordion-body span {
+      color: #546285;
+      font-size: "Wigrum-Regular", sans-serif;
+      font-weight: bold;
+      font-size: 12px; }
+    main .main_content .content .accordion-body #cr_list .solution_template, main .main_content .content .accordion-body #sante_list .solution_template, main .main_content .content .accordion-body #sp_list .solution_template, main .main_content .content .accordion-body #md_list .solution_template, main .main_content .content .accordion-body #lls_list .solution_template, main .main_content .content .accordion-body #lv_list .solution_template, main .main_content .content .accordion-body #aid_list .solution_template, main .main_content .content .accordion-body #md_national .solution_template {
+      width: 100%;
+      min-height: 45px;
+      border-radius: 5px;
+      margin: 6px 0; }
+      main .main_content .content .accordion-body #cr_list .solution_template .puce, main .main_content .content .accordion-body #sante_list .solution_template .puce, main .main_content .content .accordion-body #sp_list .solution_template .puce, main .main_content .content .accordion-body #md_list .solution_template .puce, main .main_content .content .accordion-body #lls_list .solution_template .puce, main .main_content .content .accordion-body #lv_list .solution_template .puce, main .main_content .content .accordion-body #aid_list .solution_template .puce, main .main_content .content .accordion-body #md_national .solution_template .puce {
+        height: 50px;
+        width: 50px;
+        background-color: #00B0FF;
+        color: #FFF;
+        font-size: 20px; }
+      main .main_content .content .accordion-body #cr_list .solution_template .content, main .main_content .content .accordion-body #sante_list .solution_template .content, main .main_content .content .accordion-body #sp_list .solution_template .content, main .main_content .content .accordion-body #md_list .solution_template .content, main .main_content .content .accordion-body #lls_list .solution_template .content, main .main_content .content .accordion-body #lv_list .solution_template .content, main .main_content .content .accordion-body #aid_list .solution_template .content, main .main_content .content .accordion-body #md_national .solution_template .content {
+        line-height: 0px; }
+        main .main_content .content .accordion-body #cr_list .solution_template .content h4, main .main_content .content .accordion-body #sante_list .solution_template .content h4, main .main_content .content .accordion-body #sp_list .solution_template .content h4, main .main_content .content .accordion-body #md_list .solution_template .content h4, main .main_content .content .accordion-body #lls_list .solution_template .content h4, main .main_content .content .accordion-body #lv_list .solution_template .content h4, main .main_content .content .accordion-body #aid_list .solution_template .content h4, main .main_content .content .accordion-body #md_national .solution_template .content h4 {
+          font-size: 16px;
+          color: #546285;
+          font-family: "Wigrum-Bold", sans-serif; }
+        main .main_content .content .accordion-body #cr_list .solution_template .content p, main .main_content .content .accordion-body #sante_list .solution_template .content p, main .main_content .content .accordion-body #sp_list .solution_template .content p, main .main_content .content .accordion-body #md_list .solution_template .content p, main .main_content .content .accordion-body #lls_list .solution_template .content p, main .main_content .content .accordion-body #lv_list .solution_template .content p, main .main_content .content .accordion-body #aid_list .solution_template .content p, main .main_content .content .accordion-body #md_national .solution_template .content p {
+          color: #546285;
+          font-family: "Wigrum-Regular", sans-serif;
+          font-size: 12px;
+          line-height: 14px; }
+    main .main_content .content #accordion {
+      width: 95%; }
+      main .main_content .content #accordion .accordion-item {
+        margin: 10px 0; }
+        main .main_content .content #accordion .accordion-item.active, main .main_content .content #accordion .accordion-item:focus {
+          background-color: #FFF; }
+    main .main_content .content .accordion_title_content {
+      text-align: left; }
+      main .main_content .content .accordion_title_content span {
+        line-height: 0px; }
+        main .main_content .content .accordion_title_content span h2 {
+          color: #546285;
+          font-size: 18px;
+          font-family: "Wigrum-Bold", sans-serif; }
+        main .main_content .content .accordion_title_content span p {
+          color: #546285;
+          font-family: "Wigrum-Regular", sans-serif;
+          font-size: 12px;
+          line-height: 10px; }
+
+main .popular_articles {
+  width: 30%;
+  background-color: #FFF;
+  border-radius: 5px; }
+  main .popular_articles h1 {
+    font-family: "Wigrum-Bold", sans-serif;
+    color: #546285;
+    font-size: 22px; }
+  main .popular_articles .articles .article_card {
+    box-shadow: 0px 5px 5px #c7c7c72b;
+    min-height: 117px;
+    width: 100%;
+    margin: 2px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start; }
+    main .popular_articles .articles .article_card .article_card_thumb img {
+      width: 141px;
+      height: 81px;
+      border-radius: 10px;
+      object-fit: cover; }
+    main .popular_articles .articles .article_card .article_content {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      flex-direction: column;
+      margin-left: 10px; }
+      main .popular_articles .articles .article_card .article_content h4 {
+        font-family: "Wigrum-Regular", sans-serif;
+        color: #546285;
+        font-size: 12px; }
+      main .popular_articles .articles .article_card .article_content p {
+        font-family: "Wigrum-Regular", sans-serif;
+        color: #546285;
+        font-size: 11px; }
+
+@media (max-width: 320px) {
+  main .popular_articles {
+    width: 100%; }
+    main .popular_articles .articles .article_card {
+      width: 100% !important; }
+      main .popular_articles .articles .article_card img {
+        margin-top: 10px; } }
+
+@media (max-width: 768px) {
+  main .popular_articles {
+    width: 100%; }
+    main .popular_articles .articles {
+      width: 100%; }
+      main .popular_articles .articles .article_card {
+        width: 100% !important; } }
+
+@media (max-width: 1408px) {
+  main .article_card {
+    text-align: center;
+    flex-direction: column !important; }
+    main .article_card .article_content {
+      align-items: center !important;
+      justify-content: center !important; }
+      main .article_card .article_content .btn-dark {
+        min-width: 10px; } }
+
+/* PAGINATION */
+.ais-Pagination-list {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.ais-Pagination-list li {
+  display: inline;
+  margin-right: 5px; }
+
+.ais-Pagination-list .ais-Pagination-item--firstPage,
+.ais-Pagination-list .ais-Pagination-item--lastPage,
+.ais-Pagination-list .ais-Pagination-item--previousPage,
+.ais-Pagination-list .ais-Pagination-item--nextPage {
+  font-size: 20px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #fff !important;
+  color: #3898ec; }
+
+.ais-Pagination-list .ais-Pagination-item--page a {
+  background-color: #fff;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #3898ec; }
+
+.ais-Pagination-list .ais-Pagination-item--page a:hover {
+  background-color: #3898ec;
+  color: #fff; }
+
+.ais-Pagination-list .ais-Pagination-item--selected a {
+  background-color: #3898ec;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff; }
+
+.puce {
+  height: 37px;
+  width: 37px;
+  border-radius: 5px;
+  margin: 0 5px;
+  font-size: 20px; }
+  .puce.blue {
+    color: #00B0FF;
+    background-color: #03a9f42b; }
+  .puce.purple {
+    color: #462682;
+    background-color: #4626822b; }
+  .puce.orange {
+    color: #F49403;
+    background-color: #f494032b; }
+  .puce.gray {
+    color: #546285;
+    background-color: #F6F6FB; }
